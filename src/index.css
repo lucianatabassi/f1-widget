@@ -32,7 +32,6 @@
 }
 
 @theme {
-  /* Aquí puedes definir colores de F1 si quieres más adelante */
   --font-f1: "F1-font", sans-serif;
   --font-helvetica: "Helvetica", sans-serif;
 }

@@ -2,6 +2,7 @@ import { ThreeColumns } from "./ThreeColumns";
 import { StatusColumn } from "./StatusColumn";
 import { RaceHeader } from "./RaceHeader";
 import { Leaderboard } from "./Leaderboard";
+import { TrackMap } from "./TrackMap";
 
 export const RaceLayout = ({ children }) => {
   const mockF1Data = {
@@ -14,6 +15,7 @@ export const RaceLayout = ({ children }) => {
         abbreviation: "COL",
         gapToLeader: "Interval",
         teamHex: "#64C4FF",
+        lapProgress: 45,
         inPits: false,
       },
       {
@@ -22,6 +24,7 @@ export const RaceLayout = ({ children }) => {
         abbreviation: "VER",
         gapToLeader: "+1.245",
         teamHex: "#3671C6",
+        lapProgress: 42,
         inPits: false,
       },
       {
@@ -30,6 +33,7 @@ export const RaceLayout = ({ children }) => {
         abbreviation: "LEC",
         gapToLeader: "+5.890",
         teamHex: "#E10600",
+        lapProgress: 10,
         inPits: true,
       },
       {
@@ -60,7 +64,7 @@ export const RaceLayout = ({ children }) => {
         id: 7,
         position: 7,
         abbreviation: "COL",
-        gapToLeader: "INTERVAL",
+        gapToLeader: "Interval",
         teamHex: "#64C4FF",
         inPits: false,
       },
@@ -84,7 +88,7 @@ export const RaceLayout = ({ children }) => {
         id: 10,
         position: 10,
         abbreviation: "COL",
-        gapToLeader: "INTERVAL",
+        gapToLeader: "Interval",
         teamHex: "#64C4FF",
         inPits: false,
       },
@@ -108,7 +112,7 @@ export const RaceLayout = ({ children }) => {
         id: 13,
         position: 13,
         abbreviation: "COL",
-        gapToLeader: "INTERVAL",
+        gapToLeader: "Interval",
         teamHex: "#64C4FF",
         inPits: false,
       },
@@ -123,6 +127,62 @@ export const RaceLayout = ({ children }) => {
       {
         id: 15,
         position: 15,
+        abbreviation: "LEC",
+        gapToLeader: "+5.890",
+        teamHex: "#E10600",
+        inPits: true,
+      },
+      {
+        id: 16,
+        position: 16,
+        abbreviation: "LEC",
+        gapToLeader: "+5.890",
+        teamHex: "#E10600",
+        inPits: true,
+      },
+      {
+        id: 17,
+        position: 17,
+        abbreviation: "LEC",
+        gapToLeader: "+5.890",
+        teamHex: "#E10600",
+        inPits: true,
+      },
+      {
+        id: 18,
+        position: 18,
+        abbreviation: "LEC",
+        gapToLeader: "+5.890",
+        teamHex: "#E10600",
+        inPits: true,
+      },
+      {
+        id: 19,
+        position: 19,
+        abbreviation: "LEC",
+        gapToLeader: "+5.890",
+        teamHex: "#E10600",
+        inPits: true,
+      },
+      {
+        id: 20,
+        position: 20,
+        abbreviation: "LEC",
+        gapToLeader: "+5.890",
+        teamHex: "#E10600",
+        inPits: true,
+      },
+      {
+        id: 21,
+        position: 21,
+        abbreviation: "LEC",
+        gapToLeader: "+5.890",
+        teamHex: "#E10600",
+        inPits: true,
+      },
+      {
+        id: 22,
+        position: 22,
         abbreviation: "LEC",
         gapToLeader: "+5.890",
         teamHex: "#E10600",
@@ -143,6 +203,10 @@ export const RaceLayout = ({ children }) => {
         
 
         <Leaderboard drivers={mockF1Data.drivers} />
+      </div>
+
+      <div className="flex-1 min-h-[200px]"> 
+         <TrackMap drivers={mockF1Data.drivers} />
       </div>
     </ThreeColumns>
   );
