@@ -23,7 +23,7 @@ function InfoSection({ pais, circuito, horario, image, status, date, month }) {
         <h3 className="text-md font-inter font-medium text-zinc-400 uppercase tracking-wider ">
           {circuito}
         </h3>
-        <p className="text-lg font-inter font-[700] text-gray-200 tracking-wide uppercase border-l-2 border-red-600 pl-3">
+        <p className="text-lg font-inter font-[700] text-gray-200 tracking-wide capitalize border-l-2 border-red-600 pl-3">
           {horario}
         </p>
 

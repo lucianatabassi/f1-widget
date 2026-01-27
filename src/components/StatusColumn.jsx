@@ -8,7 +8,7 @@ export const StatusColumn = ({ status, date, month, laps }) => {
           </h2>
           <div className="px-2">
             {" "}
-            <span className="px-6 py-1 bg-zinc-800 rounded-full font-f1 text-gray-300 text-lg uppercase">
+            <span className="px-6 py-1 bg-zinc-800 rounded-full font-f1 text-gray-300 text-lg capitalize">
               {month}
             </span>
           </div>
