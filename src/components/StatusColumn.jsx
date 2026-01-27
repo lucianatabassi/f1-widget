@@ -3,7 +3,7 @@ export const StatusColumn = ({ status, date, month, laps }) => {
     <div className="flex flex-col items-center justify-center p-10 border-r border-zinc-800 w-full">
       {status === "calendar" && (
         <div className="text-center animate-fadeIn">
-          <h2 className="flex justify-center text-xl font-f1 text-gray-300 p-3 whitespace-nowrap">
+          <h2 className="flex justify-center text-2xl font-f1 text-gray-300 p-3 whitespace-nowrap">
             {date}
           </h2>
           <div className="px-2">

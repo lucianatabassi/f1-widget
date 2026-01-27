@@ -16,6 +16,12 @@
   font-weight: 700;
   font-style: bold;
 }
+@font-face {
+  font-family: 'Inter';
+  src: url('./assets/fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype-variations');
+  font-weight: 100 900;
+  font-style: normal;
+}
 
 @font-face {
   font-family: 'Helvetica';
@@ -33,5 +39,6 @@
 
 @theme {
   --font-f1: "F1-font", sans-serif;
+  --font-inter: "Inter", sans-serif;
   --font-helvetica: "Helvetica", sans-serif;
 }

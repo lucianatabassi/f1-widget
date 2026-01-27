@@ -1,6 +1,6 @@
 import { ThreeColumns } from "./ThreeColumns";
 import { StatusColumn } from "./StatusColumn";
-import imagenColapinto from "../assets/circuitos/colapinto.png";
+import imagenColapinto from "../assets/fc.png";
 import { use } from "react";
 
 function InfoSection({ pais, circuito, horario, image, status, date, month }) {
@@ -13,10 +13,17 @@ function InfoSection({ pais, circuito, horario, image, status, date, month }) {
         laps="58/58" // Esto vendría de la API en el futuro
       />
 
-      <div className="flex flex-col justify-center p-10 gap-4 text-white ">
-        <h1 className="font-f1 font-bold text-3xl">{pais}</h1>
-        <h2 className="font-helvetica text-lg text-gray-300">{circuito}</h2>
-        <p className="font-helvetica font-bold text-gray-200 tracking-wide uppercase">
+      <div className="flex flex-col justify-center p-10 gap-3 text-white ">
+        <h1 className="absolute -top-4 -left-4 text-[8rem] font-f1 font-[900] text-white/2 uppercase select-none pointer-events-none z-0">
+          {pais}
+        </h1>
+        <h1 className="text-5xl font-f1 font-[800] uppercase tracking-tighter text-white">
+          {pais}
+        </h1>
+        <h3 className="text-md font-inter font-medium text-zinc-400 uppercase tracking-wider ">
+          {circuito}
+        </h3>
+        <p className="text-lg font-inter font-[700] text-gray-200 tracking-wide uppercase border-l-2 border-red-600 pl-3">
           {horario}
         </p>
 
@@ -29,7 +36,7 @@ function InfoSection({ pais, circuito, horario, image, status, date, month }) {
         <img
           src={imagenColapinto}
           alt=""
-          className="w-full h-auto object-cover"
+          className="w-[full] h-[400px] object-cover"
         />
       </div>
     </ThreeColumns>
