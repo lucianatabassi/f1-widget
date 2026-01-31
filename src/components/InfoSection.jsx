@@ -13,11 +13,11 @@ function InfoSection({ pais, circuito, horario, image, status, date, month }) {
         laps="58/58" // Esto vendría de la API en el futuro
       />
 
-      <div className="flex flex-col justify-center p-10 gap-3 text-white ">
+      <div className="w-full min-w-0 flex flex-col justify-between p-10 pt-20 text-white ">
         <h1 className="absolute -top-4 -left-4 text-[8rem] font-f1 font-[900] text-white/2 uppercase select-none pointer-events-none z-0">
           {pais}
         </h1>
-        <h1 className="text-5xl font-f1 font-[800] uppercase tracking-tighter text-white">
+        <h1 className="text-5xl font-f1 font-[800] uppercase tracking-tighter text-white whitespace-nowrap">
           {pais}
         </h1>
         <h3 className="text-md font-inter font-medium text-zinc-400 uppercase tracking-wider ">
@@ -27,8 +27,12 @@ function InfoSection({ pais, circuito, horario, image, status, date, month }) {
           {horario}
         </p>
 
-        <div className="w-full h-auto pt-15">
-          <img src={image} alt="" className="w-full h-auto" />
+        <div className="w-full h-[250px] flex items-center justify-center p-4 overflow-hidden">
+          <img
+            src={image}
+            alt=""
+            className="max-w-full max-h-full object-contain brightness-0 invert drop-shadow-lg"
+          />
         </div>
       </div>
 

@@ -4,21 +4,23 @@ import { RaceLayout } from "./RaceLayout";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@heroui/react";
 
-// 1. IMPORTA TUS IMÁGENES AQUÍ
-import imgAustralia from "../assets/circuitos/australiagp.svg";
-import imgDefault from "../assets/circuitos/australiagp.svg"; 
+import imgDefault from "../assets/circuitos/albert_park.svg";
 
 export const Carrusel = () => {
   const [carreras, setCarreras] = useState([]);
   const [loading, setLoading] = useState(true);
   const [indiceActual, setIndiceActual] = useState(0);
 
-  const imagenesCircuitos = {
-    albert_park: imgAustralia,
-    bahrain: imgDefault,
-    jeddah: imgDefault,
-    // ... otros
-  };
+
+  const imagenesRaw = import.meta.glob("../assets/circuitos/*.svg", {
+    eager: true,
+  });
+  const mapaImagenes = Object.keys(imagenesRaw).reduce((accumulator, path) => {
+    const nombreArchivo = path.split("/").pop().replace(".svg", "");
+
+    accumulator[nombreArchivo] = imagenesRaw[path].default;
+    return accumulator;
+  }, {});
 
   useEffect(() => {
     fetch("https://api.jolpi.ca/ergast/f1/current.json")
@@ -35,7 +37,9 @@ export const Carrusel = () => {
           let fechaInicio;
           // Si la API trae la Práctica 1, usamos esa fecha
           if (race.FirstPractice) {
-            fechaInicio = new Date(`${race.FirstPractice.date}T${race.FirstPractice.time}`);
+            fechaInicio = new Date(
+              `${race.FirstPractice.date}T${race.FirstPractice.time}`,
+            );
           } else {
             // Si no, restamos 2 días al domingo matemáticamente
             fechaInicio = new Date(fechaCarrera);
@@ -45,13 +49,16 @@ export const Carrusel = () => {
           // 3. ESTADO
           let estado = "calendar";
           if (hoy > fechaCarrera) estado = "finished";
-          if (hoy.toDateString() === fechaCarrera.toDateString()) estado = "live";
+          if (hoy.toDateString() === fechaCarrera.toDateString())
+            estado = "live";
+
+          const imagenAutomatica = mapaImagenes[race.Circuit.circuitId];
 
           return {
             id: race.round,
             pais: race.Circuit.Location.country,
             circuito: race.Circuit.circuitName,
-            
+
             // FORMATO HORARIO: "DOM 15:00 HS"
             horario: fechaCarrera.toLocaleString("es-ES", {
               weekday: "long",
@@ -62,11 +69,13 @@ export const Carrusel = () => {
 
             // DATOS PARA STATUS COLUMN (RANGO DE FECHAS)
             // Esto genera el "05 - 08"
-            date: `${fechaInicio.toLocaleDateString("es-ES", { day: '2-digit' })} - ${fechaCarrera.toLocaleDateString("es-ES", { day: '2-digit' })}`,
-            
-            month: fechaCarrera.toLocaleDateString("es-ES", { month: "short" }).replace(".", ""), // "mar"
+            date: `${fechaInicio.toLocaleDateString("es-ES", { day: "2-digit" })} - ${fechaCarrera.toLocaleDateString("es-ES", { day: "2-digit" })}`,
+
+            month: fechaCarrera
+              .toLocaleDateString("es-ES", { month: "short" })
+              .replace(".", ""), // "mar"
             status: estado,
-            imagen: imagenesCircuitos[race.Circuit.circuitId] || imgDefault,
+            imagen: imagenAutomatica || imgDefault,
             raw: race,
           };
         });
