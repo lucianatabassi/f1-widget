@@ -7,20 +7,57 @@ import { Button } from "@heroui/react";
 import imgDefault from "../assets/circuitos/albert_park.svg";
 
 export const Carrusel = () => {
+  const previousWinners = {
+    "albert_park": "norris",
+    "shanghai": "piastri", 
+    "suzuka": "verstappen", 
+    "bahrain": "piastri", 
+    "jeddah": "piastri", 
+    "miami": "piastri", 
+    "imola": "verstappen", 
+    "monaco": "norris", 
+    "catalunya": "piastri", 
+    "villeneuve": "russell", 
+    "red_bull_ring": "norris", 
+    "silverstone": "norris", 
+    "spa": "piastri", 
+    "hungaroring": "norris", 
+    "zandvoort": "piastri", 
+    "monza": "verstappen", 
+    "baku": "verstappen", 
+    "marina_bay": "russell",
+    "americas": "verstappen", 
+    "rodriguez": "norris", 
+    "interlagos": "norris", 
+    "las_vegas": "verstappen", 
+    "losail": "verstappen", 
+    "yas_marina": "verstappen",
+  };
+
   const [carreras, setCarreras] = useState([]);
   const [loading, setLoading] = useState(true);
   const [indiceActual, setIndiceActual] = useState(0);
 
-
   const imagenesRaw = import.meta.glob("../assets/circuitos/*.svg", {
     eager: true,
   });
+
   const mapaImagenes = Object.keys(imagenesRaw).reduce((accumulator, path) => {
     const nombreArchivo = path.split("/").pop().replace(".svg", "");
 
     accumulator[nombreArchivo] = imagenesRaw[path].default;
     return accumulator;
   }, {});
+
+  const winnersRaw = import.meta.glob ("../assets/ganadores/*.png", {
+    eager: true
+  });
+
+  const circuitWinners = Object.keys(winnersRaw).reduce((acc, path) => {
+    const nombreImagen = path.split("/").pop().replace(".png", "").toLowerCase();;
+    acc[nombreImagen] = winnersRaw[path].default;
+    return acc;
+  }, {})
 
   useEffect(() => {
     fetch("https://api.jolpi.ca/ergast/f1/current.json")
@@ -53,6 +90,8 @@ export const Carrusel = () => {
             estado = "live";
 
           const imagenAutomatica = mapaImagenes[race.Circuit.circuitId];
+          const nombreGanador = previousWinners[race.Circuit.circuitId];
+          const imagenGanador = nombreGanador ? circuitWinners[nombreGanador] : null;
 
           return {
             id: race.round,
@@ -76,6 +115,7 @@ export const Carrusel = () => {
               .replace(".", ""), // "mar"
             status: estado,
             imagen: imagenAutomatica || imgDefault,
+            ganador: imagenGanador,
             raw: race,
           };
         });
@@ -118,6 +158,7 @@ export const Carrusel = () => {
           date={data.date}
           month={data.month}
           status={data.status}
+          ganador={data.ganador}
         />
       )}
 

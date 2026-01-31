@@ -3,7 +3,16 @@ import { StatusColumn } from "./StatusColumn";
 import imagenColapinto from "../assets/fc.png";
 import { use } from "react";
 
-function InfoSection({ pais, circuito, horario, image, status, date, month }) {
+function InfoSection({
+  pais,
+  circuito,
+  horario,
+  image,
+  ganador,
+  status,
+  date,
+  month,
+}) {
   return (
     <ThreeColumns>
       <StatusColumn
@@ -27,7 +36,7 @@ function InfoSection({ pais, circuito, horario, image, status, date, month }) {
           {horario}
         </p>
 
-        <div className="w-full h-[250px] flex items-center justify-center p-4 overflow-hidden">
+        <div className="w-full h-[250px] flex items-center justify-start p-4 overflow-hidden">
           <img
             src={image}
             alt=""
@@ -36,11 +45,34 @@ function InfoSection({ pais, circuito, horario, image, status, date, month }) {
         </div>
       </div>
 
-      <div className="flex w-full h-auto items-end justify-end">
+      <div className="relative flex w-full h-full items-end justify-end z-50 pointer-events-none">
+        <div
+          className="
+      absolute 
+      bottom-0 
+      right-[-10px]       
+      w-[80%] h-[70%]     
+      bg-white/20         
+      blur-[80px]         
+      rounded-full
+      z-0                
+  "
+        ></div>
+
         <img
-          src={imagenColapinto}
+          src={ganador}
           alt=""
-          className="w-[full] h-[400px] object-cover"
+          className="
+      absolute 
+      bottom-0 
+      right-0 
+      h-[500px]
+      w-[111%]
+      max-w-none
+      object-cover 
+      object-center 
+      z-10             
+    "
         />
       </div>
     </ThreeColumns>
