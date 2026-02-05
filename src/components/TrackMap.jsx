@@ -24,7 +24,7 @@ export const TrackMap = ({ drivers }) => {
       </svg>
 
       {/* 2. LOS PILOTOS (PUNTOS) */}
-      <div className="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-none">
+      <div className="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-none bg-zinc-950/50 rounded-xl">
         <svg 
             viewBox={correctedViewBox}
             preserveAspectRatio="xMidYMid meet"

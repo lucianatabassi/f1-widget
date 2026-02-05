@@ -145,7 +145,7 @@ export const Carrusel = () => {
 
   const data = carreras[indiceActual];
 
-  return (
+ {/* return (
     <div className="relative w-full h-full group">
       {data.status === "live" ? (
         <RaceLayout raceData={data} />
@@ -186,5 +186,22 @@ export const Carrusel = () => {
         </Button>
       </div>
     </div>
-  );
+  ); */}
+
+   return (
+    <div className="relative w-full h-full group">
+      
+      {/* --- COMENTA ESTA LÓGICA TEMPORALMENTE --- */}
+      {/* {data.status === "live" ? ( */}
+        
+        {/* FUERZA QUE SIEMPRE SE VEA ESTE */}
+        <RaceLayout raceData={data} />
+
+      {/* ) : (
+        <InfoSection ... />
+      )} */}
+
+      {/* ... botones ... */}
+    </div>
+  ); 
 };

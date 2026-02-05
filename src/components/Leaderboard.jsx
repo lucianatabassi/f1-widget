@@ -1,3 +1,4 @@
+import { useOpenF1 } from "./src/hooks/openF1";
 import { DriversPosition } from "./DriversPosition";
 
 export const Leaderboard = ({ drivers }) => {
@@ -29,7 +30,7 @@ export const Leaderboard = ({ drivers }) => {
   );
 
     return (
-    <div className="w-full h-full p-4 bg-zinc-950/50 rounded-xl">
+    <div className="w-full h-full p-4">
       
       <div className={`${dividirCol ? 'grid grid-cols-2 gap-7' : 'flex flex-col'} h-full`}>
         

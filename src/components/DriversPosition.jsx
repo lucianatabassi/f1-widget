@@ -14,7 +14,7 @@ export const DriversPosition = ( {pos, name, gap, isPitting, teamColor = "#E1060
 
       <div className="flex items-center gap-3">
         {isPitting ? (
-          <span className="text-cyan-500 text-[14px] px-2 py-0.5 rounded-sm font-medium">
+          <span className="text-cyan-500 text-[13px] px-2 py-0.5 rounded-sm font-medium">
            + In Pit
           </span>
         ) : (
