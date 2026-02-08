@@ -1,4 +1,3 @@
-import { useOpenF1 } from "./src/hooks/openF1";
 import { DriversPosition } from "./DriversPosition";
 
 export const Leaderboard = ({ drivers }) => {
@@ -9,6 +8,7 @@ export const Leaderboard = ({ drivers }) => {
 
   const col1 = dividirCol ? drivers.slice(0, DRIVERS_PER_COL) : drivers;
   const col2 = dividirCol ? drivers.slice(DRIVERS_PER_COL) : [];
+
 
   const DriverList = ({ data }) => (
     <div className="flex flex-col gap-1 w-full">

@@ -3,210 +3,63 @@ import { StatusColumn } from "./StatusColumn";
 import { RaceHeader } from "./RaceHeader";
 import { Leaderboard } from "./Leaderboard";
 import { TrackMap } from "./TrackMap";
+import { openF1 } from "../hooks/openF1";
 
-export const RaceLayout = ({ children }) => {
-  const mockF1Data = {
-    status: "live",
-    currentLap: "10 / 70",
-    drivers: [
-      {
-        id: 1,
-        position: 1,
-        abbreviation: "COL",
-        gapToLeader: "Interval",
-        teamHex: "#64C4FF",
-        lapProgress: 45,
-        inPits: false,
-      },
-      {
-        id: 2,
-        position: 2,
-        abbreviation: "VER",
-        gapToLeader: "+1.245",
-        teamHex: "#3671C6",
-        lapProgress: 42,
-        inPits: false,
-      },
-      {
-        id: 3,
-        position: 3,
-        abbreviation: "LEC",
-        gapToLeader: "+5.890",
-        teamHex: "#E10600",
-        lapProgress: 10,
-        inPits: true,
-      },
-      {
-        id: 4,
-        position: 4,
-        abbreviation: "COL",
-        gapToLeader: "+1.245",
-        teamHex: "#64C4FF",
-        inPits: false,
-      },
-      {
-        id: 5,
-        position: 5,
-        abbreviation: "VER",
-        gapToLeader: "+1.245",
-        teamHex: "#3671C6",
-        inPits: false,
-      },
-      {
-        id: 6,
-        position: 6,
-        abbreviation: "LEC",
-        gapToLeader: "+5.890",
-        teamHex: "#E10600",
-        inPits: true,
-      },
-      {
-        id: 7,
-        position: 7,
-        abbreviation: "COL",
-        gapToLeader: "+1.245",
-        teamHex: "#64C4FF",
-        inPits: false,
-      },
-      {
-        id: 8,
-        position: 8,
-        abbreviation: "VER",
-        gapToLeader: "+1.245",
-        teamHex: "#3671C6",
-        inPits: false,
-      },
-      {
-        id: 9,
-        position: 9,
-        abbreviation: "LEC",
-        gapToLeader: "+5.890",
-        teamHex: "#E10600",
-        inPits: true,
-      },
-      {
-        id: 10,
-        position: 10,
-        abbreviation: "COL",
-        gapToLeader: "+1.245",
-        teamHex: "#64C4FF",
-        inPits: false,
-      },
-      {
-        id: 11,
-        position: 11,
-        abbreviation: "VER",
-        gapToLeader: "+1.245",
-        teamHex: "#3671C6",
-        inPits: false,
-      },
-      {
-        id: 12,
-        position: 12,
-        abbreviation: "LEC",
-        gapToLeader: "+5.890",
-        teamHex: "#E10600",
-        inPits: true,
-      },
-      {
-        id: 13,
-        position: 13,
-        abbreviation: "COL",
-        gapToLeader: "+1.245",
-        teamHex: "#64C4FF",
-        inPits: false,
-      },
-      {
-        id: 14,
-        position: 14,
-        abbreviation: "VER",
-        gapToLeader: "+1.245",
-        teamHex: "#3671C6",
-        inPits: false,
-      },
-      {
-        id: 15,
-        position: 15,
-        abbreviation: "LEC",
-        gapToLeader: "+5.890",
-        teamHex: "#E10600",
-        inPits: true,
-      },
-      {
-        id: 16,
-        position: 16,
-        abbreviation: "LEC",
-        gapToLeader: "+5.890",
-        teamHex: "#E10600",
-        inPits: true,
-      },
-      {
-        id: 17,
-        position: 17,
-        abbreviation: "LEC",
-        gapToLeader: "+5.890",
-        teamHex: "#E10600",
-        inPits: true,
-      },
-      {
-        id: 18,
-        position: 18,
-        abbreviation: "LEC",
-        gapToLeader: "+5.890",
-        teamHex: "#E10600",
-        inPits: true,
-      },
-      {
-        id: 19,
-        position: 19,
-        abbreviation: "LEC",
-        gapToLeader: "+5.890",
-        teamHex: "#E10600",
-        inPits: true,
-      },
-      {
-        id: 20,
-        position: 20,
-        abbreviation: "LEC",
-        gapToLeader: "+5.890",
-        teamHex: "#E10600",
-        inPits: true,
-      },
-      {
-        id: 21,
-        position: 21,
-        abbreviation: "LEC",
-        gapToLeader: "+5.890",
-        teamHex: "#E10600",
-        inPits: true,
-      },
-      {
-        id: 22,
-        position: 22,
-        abbreviation: "LEC",
-        gapToLeader: "+5.890",
-        teamHex: "#E10600",
-        inPits: true,
-      },
-    ],
-  };
+export const RaceLayout = ({ raceData }) => {
+
+  const {drivers, positions, sessionName, loading} = openF1(raceData.pais, raceData.raw.season); //guarda los datos segun el pais y la carrera
+  const totalLaps = "??";
+  //transformar datos de la API para la UI
+  const dataTiempoReal = drivers.map((driver) => { //map recorre toda una lista y a cada elemento lo modifique segun lo que se le pida
+
+    //busca la pos actual, si no tiene asigna el 99
+    const posActual = positions[driver.driver_number] || 99;
+
+    return {
+      id: Number(driver.driver_number),
+      position: posActual,
+      abbreviation: driver.name_acronym, //dato propio de la API
+      gapToLeader: posActual === 1 ? "Interval" : "+ ---",
+      teamHex: `#${driver.team_colour}`, 
+      inPits: false,
+
+    };
+  })
+
+  // ordenar posiciones del primero al ultimo
+  .sort((a, b) => a.position - b.position)
+  //filtra los que no tienen posicion
+  .filter((d) => d.position !== 99);
+
   return (
     <ThreeColumns>
-      <StatusColumn status={mockF1Data.status} laps={mockF1Data.currentLap} />
+      <StatusColumn 
+        status={loading ? "loading" : "live"} 
+       
+        // Si está cargando: "-- / --"
+        // Si ya cargó: "15 / 58" (Se actualizará solo si usas setInterval en el hook)
+        laps={`${totalLaps} / ??`}
+      />
 
       <div className="w-full flex flex-col">
         
           <RaceHeader
-            carrera="Práctica Libre 1"
-            circuito="QATAR AIRWAYS AUSTRALIAN GRAND PRIX"
-          />
+            carrera={loading ? "CARGANDO..." : sessionName.toUpperCase()}
+            circuito={raceData.circuito.toUpperCase()} // Usamos el nombre real
+         />
         
 
-        <Leaderboard drivers={mockF1Data.drivers} />
+        {loading ? (
+            <div className="flex-1 flex items-center justify-center text-white animate-pulse font-f1">
+                CONECTANDO SATÉLITE...
+            </div>
+        ) : (
+            <Leaderboard drivers={dataTiempoReal} />
+        )}
       </div>
 
       <div className="flex-1 min-h-[200px]"> 
-         <TrackMap drivers={mockF1Data.drivers} />
+         <TrackMap drivers={dataTiempoReal} />
       </div>
     </ThreeColumns>
   );
