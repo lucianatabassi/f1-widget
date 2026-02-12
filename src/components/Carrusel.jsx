@@ -38,12 +38,12 @@ export const Carrusel = () => {
   const [loading, setLoading] = useState(true);
   const [indiceActual, setIndiceActual] = useState(0);
 
-  const imagenesRaw = import.meta.glob("../assets/circuitos/*.svg", {
+  const imagenesRaw = import.meta.glob("../assets/circuitos/*.avif", {
     eager: true,
   });
 
   const mapaImagenes = Object.keys(imagenesRaw).reduce((accumulator, path) => {
-    const nombreArchivo = path.split("/").pop().replace(".svg", "");
+    const nombreArchivo = path.split("/").pop().replace(".avif", "");
 
     accumulator[nombreArchivo] = imagenesRaw[path].default;
     return accumulator;
@@ -126,7 +126,6 @@ export const Carrusel = () => {
       .catch((err) => console.error("Error cargando F1:", err));
   }, []);
 
-  // ... Resto de tu código de navegación y renderizado igual ...
   const siguiente = () => {
     setIndiceActual((prev) => (prev === carreras.length - 1 ? 0 : prev + 1));
   };
@@ -145,7 +144,7 @@ export const Carrusel = () => {
 
   const data = carreras[indiceActual];
 
- {/* return (
+ return (
     <div className="relative w-full h-full group">
       {data.status === "live" ? (
         <RaceLayout raceData={data} />
@@ -159,6 +158,7 @@ export const Carrusel = () => {
           month={data.month}
           status={data.status}
           ganador={data.ganador}
+          ganadorNombre={previousWinners[data.raw.Circuit.circuitId]}
         />
       )}
 
@@ -186,22 +186,16 @@ export const Carrusel = () => {
         </Button>
       </div>
     </div>
-  ); */}
+  ); 
 
-   return (
+ /* return (
     <div className="relative w-full h-full group">
       
-      {/* --- COMENTA ESTA LÓGICA TEMPORALMENTE --- */}
-      {/* {data.status === "live" ? ( */}
-        
-        {/* FUERZA QUE SIEMPRE SE VEA ESTE */}
+     
+      
         <RaceLayout raceData={data} />
 
-      {/* ) : (
-        <InfoSection ... />
-      )} */}
-
-      {/* ... botones ... */}
+     
     </div>
-  ); 
+  ); */
 };

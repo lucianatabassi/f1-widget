@@ -2,7 +2,6 @@ import { ThreeColumns } from "./ThreeColumns";
 import { StatusColumn } from "./StatusColumn";
 import { RaceHeader } from "./RaceHeader";
 import { Leaderboard } from "./Leaderboard";
-import { TrackMap } from "./TrackMap";
 import { openF1 } from "../hooks/openF1";
 
 export const RaceLayout = ({ raceData }) => {
@@ -58,9 +57,6 @@ export const RaceLayout = ({ raceData }) => {
         )}
       </div>
 
-      <div className="flex-1 min-h-[200px]"> 
-         <TrackMap drivers={dataTiempoReal} />
-      </div>
     </ThreeColumns>
   );
 };
