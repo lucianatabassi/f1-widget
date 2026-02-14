@@ -9,88 +9,140 @@ export const openF1 = (pais, año) => {
     carreraKey: null,
     sessionName: "",
     loading: true,
-    currentLap: 0, // <--- Aquí guardaremos la vuelta actual en vivo
-    totalLaps: 58, // <--- Valor por defecto (luego veremos cómo mejorarlo)
+    currentLap: 0, 
+    totalLaps: 58, 
   });
 
   useEffect(() => {
-    if (!pais || !año) return; // evita errores cuando no hay datos
+    if (!pais || !año) return;
 
-    //pedir datos a la API
+    // --- MODO SIMULACIÓN PARA DISEÑAR UI ---
+    // Esto simula que los datos tardan 800ms en llegar y luego carga una tabla falsa
+    const timer = setTimeout(() => {
+      setTelemetria({
+        drivers: [
+          { driver_number: 1, name_acronym: "VER", team_colour: "3671C6", full_name: "Max Verstappen" },
+          { driver_number: 4, name_acronym: "NOR", team_colour: "FF8000", full_name: "Lando Norris" },
+          { driver_number: 16, name_acronym: "LEC", team_colour: "E80020", full_name: "Charles Leclerc" },
+          { driver_number: 55, name_acronym: "SAI", team_colour: "E80020", full_name: "Carlos Sainz" },
+          { driver_number: 81, name_acronym: "PIA", team_colour: "FF8000", full_name: "Oscar Piastri" },
+          { driver_number: 44, name_acronym: "HAM", team_colour: "27F4D2", full_name: "Lewis Hamilton" },
+          { driver_number: 63, name_acronym: "RUS", team_colour: "27F4D2", full_name: "George Russell" },
+          { driver_number: 11, name_acronym: "PER", team_colour: "3671C6", full_name: "Sergio Perez" },
+          { driver_number: 14, name_acronym: "ALO", team_colour: "229971", full_name: "Fernando Alonso" },
+          { driver_number: 18, name_acronym: "STR", team_colour: "229971", full_name: "Lance Stroll" },
+          { driver_number: 22, name_acronym: "TSU", team_colour: "6692FF", full_name: "Yuki Tsunoda" },
+          { driver_number: 3, name_acronym: "RIC", team_colour: "6692FF", full_name: "Daniel Ricciardo" },
+          { driver_number: 27, name_acronym: "HUL", team_colour: "B6BABD", full_name: "Nico Hulkenberg" },
+          { driver_number: 20, name_acronym: "MAG", team_colour: "B6BABD", full_name: "Kevin Magnussen" },
+          { driver_number: 23, name_acronym: "ALB", team_colour: "64C4FF", full_name: "Alexander Albon" },
+          { driver_number: 2, name_acronym: "SAR", team_colour: "64C4FF", full_name: "Logan Sargeant" },
+          { driver_number: 31, name_acronym: "OCO", team_colour: "0093CC", full_name: "Esteban Ocon" },
+          { driver_number: 10, name_acronym: "GAS", team_colour: "0093CC", full_name: "Pierre Gasly" },
+          { driver_number: 77, name_acronym: "BOT", team_colour: "52E252", full_name: "Valtteri Bottas" },
+          { driver_number: 24, name_acronym: "ZHO", team_colour: "52E252", full_name: "Zhou Guanyu" }
+        ],
+        // Posiciones del 1 al 20 asociadas al número del piloto
+        positions: {
+          1: 1, 4: 2, 16: 3, 55: 4, 81: 5, 44: 6, 63: 7, 11: 8, 14: 9, 18: 10,
+          22: 11, 3: 12, 27: 13, 20: 14, 23: 15, 2: 16, 31: 17, 10: 18, 77: 19, 24: 20
+        },
+        // INTERVALOS: Diferencia de tiempo respecto al líder o al piloto de adelante.
+        // Clave: Número de piloto | Valor: String del intervalo (ej. "+1.234" o "Interval")
+        intervals: {
+          1: "Interval", // El líder no tiene gap
+          4: "+1.245",
+          16: "+3.401",
+          55: "+4.112",
+          81: "+6.890",
+          44: "+8.304",
+          63: "+9.100",
+          11: "+12.450",
+          14: "+14.002",
+          18: "+16.320",
+          22: "+19.870",
+          3: "+21.450",
+          27: "+23.110",
+          20: "+25.900",
+          23: "+28.400",
+          2: "+31.002",
+          31: "+35.500",
+          10: "+38.120",
+          77: "+42.000",
+          24: "+45.100"
+        },
+        raceStatus: "Green",
+        carreraKey: 9999,
+        sessionName: "Australia",
+        loading: false,
+        currentLap: 42,
+        totalLaps: 58,
+      });
+    }, 800);
+
+    return () => clearTimeout(timer); // Limpiamos el timer si el componente se desmonta
+
+
+    // =========================================================
+    // --- TU CÓDIGO REAL (COMENTADO HASTA QUE TERMINES LA UI) ---
+    /*
     const fetchData = async () => {
       try {
         const traducirPais = { USA: "United States", UAE: "Abu Dhabi" };
-        const paisTraducido = traducirPais[pais] || pais; // traduce el país si es necesario
+        const paisTraducido = traducirPais[pais] || pais;
 
         const sessionRes = await fetch(
           `https://api.openf1.org/v1/sessions?country_name=${paisTraducido}&year=${año}&session_name=Race`,
         );
-
-        const dataSessions = await sessionRes.json(); // convierte los datos obtenido en un array
+        const dataSessions = await sessionRes.json();
 
         if (dataSessions.length === 0) {
-          setTelemetria((prev) => ({ ...prev, loading: false })); // si no hay datos, solo actualiza el estado de carga
+          setTelemetria((prev) => ({ ...prev, loading: false }));
           return;
         }
 
-        /*  const carreraKey = dataSessions[0].session_key; // toma la key de la primera carrera
-        const tipoCarrera = dataSessions[0].session_name;*/
+        const carreraKey = dataSessions[0].session_key;
+        const tipoCarrera = dataSessions[0].session_name;
 
-        //CODIGO PARA PROBAR
-        const carreraKey = 9472;
-        const tipoCarrera = "Race (TEST MODE)";
+        const drivers = await fetch(`https://api.openf1.org/v1/drivers?session_key=${carreraKey}`);
+        const dataDrivers = await drivers.json();
 
-        const drivers = await fetch(
-          `https://api.openf1.org/v1/drivers?session_key=${carreraKey}`,
-        );
-        const dataDrivers = await drivers.json(); // // convierte los datos obtenido en un array
-
-        const positions = await fetch(
-          `https://api.openf1.org/v1/positions?session_key=${carreraKey}`,
-        );
+        const positions = await fetch(`https://api.openf1.org/v1/positions?session_key=${carreraKey}`);
 
         if (!positions.ok) {
-          console.warn("⚠️ OpenF1: La API está saturada o falló. Esperando...");
-          setTelemetria((prev) => ({ ...prev, loading: false }));
-          return; // <--- FRENAMOS AQUÍ PARA QUE NO EXPLOTE
-        }
-
-        const driversPositions = await positions.json(); // convierte los datos obtenido en un array
-
-        if (!Array.isArray(driversPositions)) {
-          console.error("OpenF1: Datos de posición inválidos", driversPositions);
+          console.warn("⚠️ OpenF1: La API está saturada o falló.");
           setTelemetria((prev) => ({ ...prev, loading: false }));
           return;
         }
 
-        const ultimasPosiciones = {}; // donde se van a ir guardando los cambios de posiciones
+        const driversPositions = await positions.json();
+
+        if (!Array.isArray(driversPositions)) {
+          setTelemetria((prev) => ({ ...prev, loading: false }));
+          return;
+        }
+
+        const ultimasPosiciones = {};
         driversPositions.forEach((pos) => {
-          ultimasPosiciones[pos.driver_number] = pos.positions; // va sobreescribiendo los cambios de posicion de cada piloto
+          ultimasPosiciones[pos.driver_number] = pos.positions;
         });
 
-        // Buscamos todas las vueltas registradas en esta sesión
-        const lapsRes = await fetch(
-          `https://api.openf1.org/v1/laps?session_key=${carreraKey}`,
-        );
+        const lapsRes = await fetch(`https://api.openf1.org/v1/laps?session_key=${carreraKey}`);
         const lapsData = await lapsRes.json();
 
-        // CALCULAR LA VUELTA ACTUAL
-        // Si hay datos de vueltas, buscamos el número más alto.
         let maxLap = 0;
         if (lapsData.length > 0) {
-          // Recorremos todas las vueltas y nos quedamos con la mayor
           maxLap = Math.max(...lapsData.map((lap) => lap.lap_number));
         }
 
-        // guardar los datos obtenidos
         setTelemetria({
           drivers: dataDrivers,
           positions: driversPositions,
           intervals: [],
           raceStatus: null,
           sessionName: tipoCarrera,
-          currentLap: maxLap, // <--- ¡Dato en vivo!
-          totalLaps: 58, // (Este dato OpenF1 NO lo da en vivo, lo dejamos fijo o lo sacamos de Ergast)
+          currentLap: maxLap,
+          totalLaps: 58,
           loading: true,
         });
       } catch (error) {
@@ -99,8 +151,11 @@ export const openF1 = (pais, año) => {
       }
     };
 
-    fetchData(); // llamar funcion
-  }, [pais, año]); // donde use Effect debe buscar
+    fetchData(); 
+    */
+    // =========================================================
+
+  }, [pais, año]);
 
   return telemetria;
 };

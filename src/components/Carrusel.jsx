@@ -29,7 +29,7 @@ export const Carrusel = () => {
     "americas": "verstappen", 
     "rodriguez": "norris", 
     "interlagos": "norris", 
-    "las_vegas": "verstappen", 
+    "vegas": "verstappen", 
     "losail": "verstappen", 
     "yas_marina": "verstappen",
   };
@@ -44,7 +44,6 @@ export const Carrusel = () => {
 
   const mapaImagenes = Object.keys(imagenesRaw).reduce((accumulator, path) => {
     const nombreArchivo = path.split("/").pop().replace(".avif", "");
-
     accumulator[nombreArchivo] = imagenesRaw[path].default;
     return accumulator;
   }, {});
@@ -54,10 +53,10 @@ export const Carrusel = () => {
   });
 
   const circuitWinners = Object.keys(winnersRaw).reduce((acc, path) => {
-    const nombreImagen = path.split("/").pop().replace(".png", "").toLowerCase();;
+    const nombreImagen = path.split("/").pop().replace(".png", "").toLowerCase();
     acc[nombreImagen] = winnersRaw[path].default;
     return acc;
-  }, {})
+  }, {});
 
   useEffect(() => {
     fetch("https://api.jolpi.ca/ergast/f1/current.json")
@@ -66,28 +65,20 @@ export const Carrusel = () => {
         const listaOriginal = data.MRData.RaceTable.Races;
 
         const carrerasFormateadas = listaOriginal.map((race) => {
-          // 1. FECHA CARRERA (DOMINGO)
           const fechaCarrera = new Date(`${race.date}T${race.time}`);
           const hoy = new Date();
 
-          // 2. FECHA INICIO (VIERNES) - CÁLCULO AUTOMÁTICO
           let fechaInicio;
-          // Si la API trae la Práctica 1, usamos esa fecha
           if (race.FirstPractice) {
-            fechaInicio = new Date(
-              `${race.FirstPractice.date}T${race.FirstPractice.time}`,
-            );
+            fechaInicio = new Date(`${race.FirstPractice.date}T${race.FirstPractice.time}`);
           } else {
-            // Si no, restamos 2 días al domingo matemáticamente
             fechaInicio = new Date(fechaCarrera);
             fechaInicio.setDate(fechaCarrera.getDate() - 2);
           }
 
-          // 3. ESTADO
           let estado = "calendar";
           if (hoy > fechaCarrera) estado = "finished";
-          if (hoy.toDateString() === fechaCarrera.toDateString())
-            estado = "live";
+          if (hoy.toDateString() === fechaCarrera.toDateString()) estado = "live";
 
           const imagenAutomatica = mapaImagenes[race.Circuit.circuitId];
           const nombreGanador = previousWinners[race.Circuit.circuitId];
@@ -97,22 +88,14 @@ export const Carrusel = () => {
             id: race.round,
             pais: race.Circuit.Location.country,
             circuito: race.Circuit.circuitName,
-
-            // FORMATO HORARIO: "DOM 15:00 HS"
             horario: fechaCarrera.toLocaleString("es-ES", {
               weekday: "long",
               hour: "2-digit",
               minute: "2-digit",
-              hour12: true, // F1 usa formato 24hs
+              hour12: true,
             }),
-
-            // DATOS PARA STATUS COLUMN (RANGO DE FECHAS)
-            // Esto genera el "05 - 08"
             date: `${fechaInicio.toLocaleDateString("es-ES", { day: "2-digit" })} - ${fechaCarrera.toLocaleDateString("es-ES", { day: "2-digit" })}`,
-
-            month: fechaCarrera
-              .toLocaleDateString("es-ES", { month: "short" })
-              .replace(".", ""), // "mar"
+            month: fechaCarrera.toLocaleDateString("es-ES", { month: "short" }).replace(".", ""),
             status: estado,
             imagen: imagenAutomatica || imgDefault,
             ganador: imagenGanador,
@@ -144,23 +127,14 @@ export const Carrusel = () => {
 
   const data = carreras[indiceActual];
 
- return (
+  // ==========================================
+  // RETORNO FORZADO PARA VER EL RACELAYOUT SIEMPRE
+  // ==========================================
+  return (
     <div className="relative w-full h-full group">
-      {data.status === "live" ? (
-        <RaceLayout raceData={data} />
-      ) : (
-        <InfoSection
-          pais={data.pais}
-          circuito={data.circuito}
-          horario={data.horario}
-          image={data.imagen}
-          date={data.date}
-          month={data.month}
-          status={data.status}
-          ganador={data.ganador}
-          ganadorNombre={previousWinners[data.raw.Circuit.circuitId]}
-        />
-      )}
+      
+      {/* AQUÍ INYECTAMOS LA VISTA DE CARRERA FORZADA */}
+      <RaceLayout raceData={data} />
 
       <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10">
         <Button
@@ -187,15 +161,4 @@ export const Carrusel = () => {
       </div>
     </div>
   ); 
-
- /* return (
-    <div className="relative w-full h-full group">
-      
-     
-      
-        <RaceLayout raceData={data} />
-
-     
-    </div>
-  ); */
 };

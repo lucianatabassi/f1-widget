@@ -30,9 +30,9 @@ export const Leaderboard = ({ drivers }) => {
   );
 
     return (
-    <div className="w-full h-full p-4">
+    <div className="w-full h-full py-4 px-10">
       
-      <div className={`${dividirCol ? 'grid grid-cols-2 gap-7' : 'flex flex-col'} h-full`}>
+      <div className={`${dividirCol ? 'grid grid-cols-2 gap-18' : 'flex flex-col'} h-full`}>
         
         <DriverList data={col1} />
 

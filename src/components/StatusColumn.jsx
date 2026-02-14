@@ -8,7 +8,7 @@ export const StatusColumn = ({ status, date, month, laps }) => {
           </h2>
           <div className="px-2">
             {" "}
-            <span className="px-6 py-1 bg-[#121212] rounded-full font-f1 text-gray-300 text-lg capitalize ">
+            <span className="px-6 py-1 bg-[#121212] rounded-full font-f1 text-gray-300 text-lg capitalize border border-white/10">
               {month}
             </span>
           </div>
@@ -26,7 +26,7 @@ export const StatusColumn = ({ status, date, month, laps }) => {
       {status === "live" && (
         <div className="flex flex-col justify-center items-center animate-fadeIn">
           <h2 className="text-xl text-yellow-500 font-f1 font-bold">{laps}</h2>
-          <div className="mt-2 px-6 py-1 bg-zinc-800 rounded-full font-f1 text-zinc-300 text-lg">
+          <div className="mt-2 px-6 py-1 bg-zinc-800 rounded-full font-f1 text-zinc-300 text-lg border border-white/10">
             LAP
           </div>
         </div>

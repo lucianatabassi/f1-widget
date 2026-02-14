@@ -1,5 +1,6 @@
 import { ThreeColumns } from "./ThreeColumns";
 import { StatusColumn } from "./StatusColumn";
+import { Flags } from "./Flags";
 
 const teamColors = {
   verstappen: "#3671C6",
@@ -38,9 +39,15 @@ function InfoSection({
             Round {round}
           </span>
 
-          <h1 className="text-5xl font-f1 font-extrabold uppercase tracking-tight">
-            {pais}
-          </h1>
+          <div className="flex items-center gap-4"> {/* Flex para alinear */}
+                
+                {/* LA BANDERA AUTOMÁTICA */}
+                <Flags country={pais} size={80} />
+
+                <h1 className="text-6xl font-f1 font-[800] uppercase tracking-tighter text-white whitespace-nowrap drop-shadow-lg">
+                    {pais}
+                </h1>
+            </div>
 
           <h3 className="text-sm font-inter text-zinc-400 uppercase tracking-[0.25em]">
             {circuito}
