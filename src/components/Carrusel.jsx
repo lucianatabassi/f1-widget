@@ -37,6 +37,9 @@ export const Carrusel = () => {
   const [carreras, setCarreras] = useState([]);
   const [loading, setLoading] = useState(true);
   const [indiceActual, setIndiceActual] = useState(0);
+  
+  // --- NUEVO ESTADO: Interruptor para forzar el modo en vivo ---
+  const [modoPruebaVivo, setModoPruebaVivo] = useState(false);
 
   const imagenesRaw = import.meta.glob("../assets/circuitos/*.avif", {
     eager: true,
@@ -126,39 +129,73 @@ export const Carrusel = () => {
   }
 
   const data = carreras[indiceActual];
+  
+  // --- LÓGICA DE ESTADO: Decide si muestra la carrera real, o la simulación si apretaste el botón ---
+  const estadoActual = modoPruebaVivo ? "live" : data.status;
 
-  // ==========================================
-  // RETORNO FORZADO PARA VER EL RACELAYOUT SIEMPRE
-  // ==========================================
   return (
     <div className="relative w-full h-full group">
       
-      {/* AQUÍ INYECTAMOS LA VISTA DE CARRERA FORZADA */}
-      <RaceLayout raceData={data} />
-
-      <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10">
+      {/* --- BOTÓN DEV (Herramienta para ti mientras diseñas) --- */}
+      <div className="absolute top-4 right-4 z-50">
         <Button
-          isIconOnly
-          radius="full"
+          color={modoPruebaVivo ? "danger" : "default"}
           variant="flat"
-          onPress={anterior}
-          className="bg-black/50 text-white hover:bg-red-600 opacity-0 group-hover:opacity-100 transition-all backdrop-blur-md"
+          size="sm"
+          onPress={() => setModoPruebaVivo(!modoPruebaVivo)}
+          className="backdrop-blur-md bg-white/10 text-white font-inter text-xs tracking-wider uppercase border border-white/20"
         >
-          <ChevronLeft size={24} />
+          {modoPruebaVivo ? "🔴 Salir de Live" : "🟢 Forzar Live (Test)"}
         </Button>
       </div>
 
-      <div className="absolute right-4 top-1/2 -translate-y-1/2 z-10">
-        <Button
-          isIconOnly
-          radius="full"
-          variant="flat"
-          onPress={siguiente}
-          className="bg-black/50 text-white hover:bg-red-600 opacity-0 group-hover:opacity-100 transition-all backdrop-blur-md"
-        >
-          <ChevronRight size={24} />
-        </Button>
-      </div>
+      {/* --- RENDERIZADO CONDICIONAL --- */}
+      {estadoActual === "live" ? (
+        // ¡AQUÍ ESTÁ EL CAMBIO! Le pasamos el estado 'modoPruebaVivo' como prop 'usarSimulacion'
+        <RaceLayout raceData={data} usarSimulacion={modoPruebaVivo} />
+      ) : (
+        <InfoSection
+          pais={data.pais}
+          circuito={data.circuito}
+          horario={data.horario}
+          image={data.imagen}
+          date={data.date}
+          month={data.month}
+          status={data.status}
+          ganador={data.ganador}
+          ganadorNombre={previousWinners[data.raw.Circuit.circuitId]}
+          round={data.id.padStart(2, '0')}
+        />
+      )}
+
+      {/* --- FLECHAS DE NAVEGACIÓN --- */}
+      {(data.status !== "live" || modoPruebaVivo) && (
+        <>
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10">
+            <Button
+              isIconOnly
+              radius="full"
+              variant="flat"
+              onPress={anterior}
+              className="bg-black/50 text-white hover:bg-red-600 opacity-0 group-hover:opacity-100 transition-all backdrop-blur-md"
+            >
+              <ChevronLeft size={24} />
+            </Button>
+          </div>
+
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 z-10">
+            <Button
+              isIconOnly
+              radius="full"
+              variant="flat"
+              onPress={siguiente}
+              className="bg-black/50 text-white hover:bg-red-600 opacity-0 group-hover:opacity-100 transition-all backdrop-blur-md"
+            >
+              <ChevronRight size={24} />
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   ); 
 };

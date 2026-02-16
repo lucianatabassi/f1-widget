@@ -4,11 +4,23 @@ import { RaceHeader } from "./RaceHeader";
 import { Leaderboard } from "./Leaderboard";
 import { openF1 } from "../hooks/openF1";
 
-export const RaceLayout = ({ raceData }) => {
-  // 1. Extraemos 'intervals', 'currentLap' y 'totalLaps' del hook
-  const { drivers, positions, intervals, sessionName, currentLap, totalLaps, loading } = openF1(
+export const RaceLayout = ({ raceData, usarSimulacion }) => {
+  // <--- Recíbelo aquí
+
+  // Pásaselo como tercer parámetro a openF1
+  const {
+    drivers,
+    positions,
+    intervals,
+    sessionName,
+    currentLap,
+    totalLaps,
+    raceStatus,
+    loading,
+  } = openF1(
     raceData.pais,
-    raceData.raw.season
+    raceData.raw.season,
+    usarSimulacion, // <--- Envíalo aquí
   );
 
   // transformar datos de la API para la UI
@@ -16,7 +28,7 @@ export const RaceLayout = ({ raceData }) => {
     .map((driver) => {
       // busca la pos actual, si no tiene asigna el 99
       const posActual = positions[driver.driver_number] || 99;
-      
+
       // 2. Buscamos el gap real usando el número del piloto
       // Si por alguna razón no lo encuentra, muestra "+ ---"
       const gapActual = intervals[driver.driver_number] || "+ ---";
@@ -47,6 +59,7 @@ export const RaceLayout = ({ raceData }) => {
         <RaceHeader
           carrera={loading ? "CARGANDO..." : sessionName.toUpperCase()}
           circuito={raceData.circuito.toUpperCase()}
+          status={raceStatus} // <--- ¡ASEGÚRATE DE TENER ESTA LÍNEA!
         />
 
         {loading ? (

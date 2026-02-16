@@ -9,7 +9,7 @@ export const Flags = ({ country, size = 40 }) => {
       srcSet={`https://flagcdn.com/w${size * 2}/${code}.png 2x`}
       alt={`Flag of ${country}`}
       className="inline-block object-cover rounded-sm shadow-sm"
-      style={{ width: 50, height: 30 }} 
+      style={{ width: 80, height: 40 }} 
     />
   );
 };
