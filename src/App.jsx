@@ -26,8 +26,7 @@ export default function App() {
           rounded-[31px] 
           overflow-hidden
           
-          /* Este es el fondo oscuro rojizo que diseñaste para tu tarjeta */
-          bg-[linear-gradient(120deg,#040404_0%,#111111_58%,#270C0CC7_72%,#32000024_100%)]
+          bg-[linear-gradient(120deg,#040404_0%,#111111_48%,#270C0CC7_72%,#32000024_100%)]
         "
         >
           <Carrusel />

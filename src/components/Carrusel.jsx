@@ -165,6 +165,7 @@ export const Carrusel = () => {
           ganador={data.ganador}
           ganadorNombre={previousWinners[data.raw.Circuit.circuitId]}
           round={data.id.padStart(2, '0')}
+          raw={data.raw}
         />
       )}
 
