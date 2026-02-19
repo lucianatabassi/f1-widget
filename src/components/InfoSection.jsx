@@ -105,7 +105,60 @@ function InfoSection({
 
         {/* --- CONTENEDOR FILA (Card + Cronograma) --- */}
         <div className="flex flex-row gap-8 w-full">
-          {/* COLUMNA IZQUIERDA: Circuito + Stats Card */}
+          {/* COLUMNA IZQUIERDA: Cronograma de Sesiones */}
+          <div className="flex flex-col flex-1 h-[338px] justify-start gap-4">
+            {sesionesProgramadas.map((sesion, index) => (
+              <div
+                key={index}
+                className={`flex items-center gap-6 pb-4 ${
+                  index !== sesionesProgramadas.length - 1
+                    ? "border-b border-white/5"
+                    : ""
+                }`}
+              >
+                {/* Bloque de Fecha (Día y Número) */}
+                <div
+                  className={`flex flex-col items-center justify-center w-12 ${
+                    sesion.isMain
+                      ? "border-l-[4px] border-[#ff0000]  pl-2"
+                      : "pl-3"
+                  }`}
+                >
+                  <span
+                    className={`text-xl font-inter font-medium leading-none ${
+                      sesion.isMain
+                        ? "text-[#ff0000] drop-shadow-[0_0_8px_rgba(255,0,0,0.8)]"
+                        : "text-white"
+                    }`}
+                  >
+                    {sesion.dayNum}
+                  </span>
+                  <span
+                    className={`text-sm font-inter font-regular uppercase tracking-wider ${
+                      sesion.isMain ? "text-[#FF0000] drop-shadow-[0_0_8px_rgba(255,0,0,0.8)]"  : "text-zinc-400"
+                    }`}
+                  >
+                    {sesion.dayName}
+                  </span>
+                </div>
+
+                {/* Bloque de Sesión y Hora */}
+                <div className="flex flex-col">
+                  <span
+                    className={`text-lg font-f1 font-bold capitalize leading-tight ${
+                      sesion.isMain ? "text-white" : "text-zinc-200"
+                    }`}
+                  >
+                    {sesion.name}
+                  </span>
+                  <span className="text-sm font-inter text-zinc-400 tracking-wide">
+                    {sesion.timeStr}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* COLUMNA DERECHA: Circuito + Stats Card */}
           <div className="relative w-[428px] h-[338px] shrink-0 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-lg shadow-2xl overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/0.5 to-white/2 pointer-events-none"></div>
 
@@ -154,60 +207,6 @@ function InfoSection({
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* COLUMNA DERECHA: Cronograma de Sesiones */}
-          <div className="flex flex-col flex-1 h-[338px] justify-start gap-4">
-            {sesionesProgramadas.map((sesion, index) => (
-              <div
-                key={index}
-                className={`flex items-center gap-6 pb-4 ${
-                  index !== sesionesProgramadas.length - 1
-                    ? "border-b border-white/5"
-                    : ""
-                }`}
-              >
-                {/* Bloque de Fecha (Día y Número) */}
-                <div
-                  className={`flex flex-col items-center justify-center w-12 ${
-                    sesion.isMain
-                      ? "border-l-[4px] border-[#ff0000]  pl-2"
-                      : "pl-3"
-                  }`}
-                >
-                  <span
-                    className={`text-xl font-inter font-medium leading-none ${
-                      sesion.isMain
-                        ? "text-[#ff0000] drop-shadow-[0_0_8px_rgba(255,0,0,0.8)]"
-                        : "text-white"
-                    }`}
-                  >
-                    {sesion.dayNum}
-                  </span>
-                  <span
-                    className={`text-sm font-inter font-regular uppercase tracking-wider ${
-                      sesion.isMain ? "text-white" : "text-zinc-400"
-                    }`}
-                  >
-                    {sesion.dayName}
-                  </span>
-                </div>
-
-                {/* Bloque de Sesión y Hora */}
-                <div className="flex flex-col">
-                  <span
-                    className={`text-lg font-f1 font-bold capitalize leading-tight ${
-                      sesion.isMain ? "text-white" : "text-zinc-200"
-                    }`}
-                  >
-                    {sesion.name}
-                  </span>
-                  <span className="text-sm font-inter text-zinc-400 tracking-wide">
-                    {sesion.timeStr}
-                  </span>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </div>
