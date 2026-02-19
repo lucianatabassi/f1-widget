@@ -20,7 +20,7 @@ export const RaceHeader = ({ carrera, circuito, status }) => {
             {carrera}
           </h1>
 
-          <div className="inline-flex items-center bg-[#6B0000] rounded-full px-3 py-0.5">
+          <div className="inline-flex items-center bg-[#360000] border-1 border-[#610000] rounded-full px-3 py-0.5">
             <span className="h-2 w-2 rounded-full bg-zinc-300 mr-2"></span>
             <span className="font-f1 font-bold text-sm uppercase text-white tracking-widest">
               LIVE
